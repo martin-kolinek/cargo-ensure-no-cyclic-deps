@@ -1,0 +1,99 @@
+[package]
+name = "cargo-ensure-no-cyclic-deps"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.88"
+license-file = "LICENSE"
+authors = ["Martin Kolinek"]
+description = "A cargo subcommand to detect cyclic dependencies in workspace crates"
+readme = "README.md"
+repository = "https://github.com/martin-kolinek/cargo-ensure-no-cyclic-deps"
+homepage = "https://github.com/martin-kolinek/cargo-ensure-no-cyclic-deps"
+keywords = ["cargo", "subcommand", "dependencies", "cycles"]
+categories = ["development-tools::cargo-plugins"]
+
+[dependencies]
+anyhow = { version = "1.0.100", default-features = false  }
+cargo_metadata = { version = "0.18", default-features = false }
+clap = { version = "4.5", default-features = false, features = ["derive", "std", "help", "usage", "error-context"] }
+petgraph = { version = "0.6", default-features = false }
+
+[dev-dependencies]
+assert_cmd = { version = "2.0", default-features = false }
+predicates = { version = "3.1", default-features = false }
+tempfile = { version = "3.13", default-features = false }
+
+[[bin]]
+name = "cargo-ensure-no-cyclic-deps"
+path = "src/main.rs"
+
+[lints.rust]
+ambiguous_negative_literals = "warn"
+missing_debug_implementations = "warn"
+missing_docs = "warn"
+redundant_imports = "warn"
+redundant_lifetimes = "warn"
+single_use_lifetimes = "warn"
+trivial_numeric_casts = "warn"
+unsafe_op_in_unsafe_fn = "warn"
+unused_extern_crates = "warn"
+unused_import_braces = "warn"
+unused_lifetimes = "warn"
+unused_macro_rules = "warn"
+unused_qualifications = "warn"
+
+# Allow cfg attributes for coverage builds
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(coverage,coverage_nightly)'] }
+
+[lints.clippy]
+cargo = { level = "warn", priority = -1 }
+complexity = { level = "warn", priority = -1 }
+correctness = { level = "warn", priority = -1 }
+nursery = { level = "warn", priority = -1 }
+pedantic = { level = "warn", priority = -1 }
+perf = { level = "warn", priority = -1 }
+style = { level = "warn", priority = -1 }
+
+# Explicitly enabled lints from the `restriction` group.
+alloc_instead_of_core = "warn"
+allow_attributes_without_reason = "warn"
+assertions_on_result_states = "warn"
+as_underscore = "warn"
+as_pointer_underscore = "warn"
+clone_on_ref_ptr = "warn"
+deref_by_slicing = "warn"
+disallowed_script_idents = "warn"
+empty_drop = "warn"
+empty_enum_variants_with_brackets = "warn"
+empty_structs_with_brackets = "warn"
+filetype_is_file = "warn"
+fn_to_numeric_cast_any = "warn"
+get_unwrap = "warn"
+if_then_some_else_none = "warn"
+infinite_loop = "warn"
+map_err_ignore = "warn"
+missing_asserts_for_indexing = "warn"
+multiple_unsafe_ops_per_block = "warn"
+mutex_atomic = "warn"
+mutex_integer = "warn"
+needless_raw_strings = "warn"
+panic = "warn"
+rc_buffer = "warn"
+rc_mutex = "warn"
+redundant_type_annotations = "warn"
+renamed_function_params = "warn"
+rest_pat_in_fully_bound_structs = "warn"
+return_and_then = "warn"
+semicolon_outside_block = "warn"
+std_instead_of_core = "warn"
+string_lit_chars_any = "warn"
+string_slice = "warn"
+suspicious_xor_used_as_pow = "warn"
+try_err = "warn"
+undocumented_unsafe_blocks = "warn"
+unnecessary_safety_comment = "warn"
+unnecessary_safety_doc = "warn"
+unnecessary_self_imports = "warn"
+unneeded_field_pattern = "warn"
+unused_result_ok = "warn"
+unwrap_in_result = "warn"
