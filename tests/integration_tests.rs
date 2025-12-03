@@ -66,6 +66,22 @@ fn test_workspace_with_dev_cycle() {
 
 #[test]
 #[cfg_attr(miri, ignore)]
+fn test_workspace_with_self_dev_dependency() {
+    let fixture_path = get_fixture_path("with_self_dev_dep");
+    let manifest_path = fixture_path.join("Cargo.toml");
+
+    let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("cargo-ensure-no-cyclic-deps"));
+    cmd.arg("ensure-no-cyclic-deps").arg("--manifest-path").arg(manifest_path);
+
+    // Self dev-dependencies are allowed since they don't create problematic cycles
+    // (they only create self-loops which are filtered out as single-node SCCs)
+    cmd.assert()
+        .success()
+        .stdout(predicate::str::contains("No cyclic dependencies found."));
+}
+
+#[test]
+#[cfg_attr(miri, ignore)]
 fn test_command_without_manifest_path() {
     // This test runs in the current workspace
     // which should not have cycles
