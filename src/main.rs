@@ -111,10 +111,24 @@ fn detect_cycles(metadata: &Metadata) -> Vec<Vec<PackageId>> {
     let sccs = tarjan_scc(&graph);
 
     // Extract cycles (SCCs with more than one node indicate a cycle)
-    sccs.into_iter()
+    // Also check for self-loops (nodes with edges to themselves)
+    let mut cycles: Vec<Vec<PackageId>> = sccs
+        .into_iter()
         .filter(|scc| scc.len() > 1)
         .map(|scc| scc.iter().map(|&idx| graph[idx].clone()).collect())
-        .collect()
+        .collect();
+
+    // Detect self-loops (a node depending on itself)
+    for package in metadata.workspace_packages() {
+        if let Some(&node_idx) = node_map.get(&package.id) {
+            // Check if there's an edge from this node to itself
+            if graph.contains_edge(node_idx, node_idx) {
+                cycles.push(vec![package.id.clone()]);
+            }
+        }
+    }
+
+    cycles
 }
 
 /// Format a cycle for display
@@ -130,5 +144,10 @@ fn format_cycle(cycle: &[PackageId], metadata: &Metadata) -> String {
         })
         .collect();
 
-    format!("{} -> {}", names.join(" -> "), names[0])
+    names
+        .iter()
+        .chain(core::iter::once(&names[0]))
+        .map(String::as_str)
+        .collect::<Vec<_>>()
+        .join(" -> ")
 }

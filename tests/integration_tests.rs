@@ -73,11 +73,12 @@ fn test_workspace_with_self_dev_dependency() {
     let mut cmd = Command::new(assert_cmd::cargo::cargo_bin!("cargo-ensure-no-cyclic-deps"));
     cmd.arg("ensure-no-cyclic-deps").arg("--manifest-path").arg(manifest_path);
 
-    // Self dev-dependencies are allowed since they don't create problematic cycles
-    // (they only create self-loops which are filtered out as single-node SCCs)
     cmd.assert()
-        .success()
-        .stdout(predicate::str::contains("No cyclic dependencies found."));
+        .failure()
+        .code(1)
+        .stderr(predicate::str::contains("Error: Cyclic dependencies detected!"))
+        .stderr(predicate::str::contains("Cycle 1:"))
+        .stderr(predicate::str::contains("self_dep_crate -> self_dep_crate"));
 }
 
 #[test]
