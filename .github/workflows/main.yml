@@ -24,7 +24,7 @@ jobs:
         with:
           toolchain: 1.88
       - name: Install Cargo Tools
-        uses: taiki-e/install-action@v2
+        uses: taiki-e/install-action@v2.85.4
         with:
           tool: cargo-hack@0.4.7
       - name: Build
@@ -49,7 +49,7 @@ jobs:
           toolchain: 1.88
           components: clippy, rustfmt
       - name: Install Cargo Tools
-        uses: taiki-e/install-action@v2
+        uses: taiki-e/install-action@v2.85.4
         with:
           tool: cargo-audit@0.21.2, cargo-udeps@0.1.57, cargo-rdme@1.4.8, cargo-workspaces@0.4.0
       - name: Clippy
@@ -78,7 +78,7 @@ jobs:
           toolchain: 1.88
           components: clippy, rustfmt
       - name: Install Cargo Tools
-        uses: taiki-e/install-action@v2
+        uses: taiki-e/install-action@v2.85.4
         with:
           tool: cargo-mutants@25.3.1, cargo-udeps@0.1.57
       - name: Mutate
@@ -97,7 +97,7 @@ jobs:
           toolchain: nightly
           components: llvm-tools-preview
       - name: Install Cargo Tools
-        uses: taiki-e/install-action@v2
+        uses: taiki-e/install-action@v2.85.4
         with:
           tool: cargo-llvm-cov@0.6.18
       - name: Build
